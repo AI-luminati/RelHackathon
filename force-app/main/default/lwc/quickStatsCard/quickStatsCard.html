@@ -1,0 +1,27 @@
+<!-- quickStatsCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:metrics" size="small" class="card-header-icon"></lightning-icon>
+                Quick Stats
+            </h3>
+        </div>
+        <div class="card-content">
+            <div class="quick-stats">
+                <a href={apexClassesLink} class="card-block-link">
+                    <div class="quick-stat-item">
+                        <div class="quick-stat-value">{apexClassesData.myClassesCount}</div>
+                        <div class="quick-stat-label">MY APEX CLASSES</div>
+                    </div>
+                </a>
+                <a href={permissionSetsLink} class="card-block-link">
+                    <div class="quick-stat-item">
+                        <div class="quick-stat-value">{permissionsData.myPermissionCount}</div>
+                        <div class="quick-stat-label">MY PERMISSIONS</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</template>

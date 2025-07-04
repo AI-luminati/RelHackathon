@@ -1,0 +1,433 @@
+/* githubCard.css */
+:host {
+    display: block;
+    height: 100%;
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+/* Header Styles */
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.external-link {
+    color: var(--current-text-secondary);
+    text-decoration: none;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    transition: background-color var(--transition-speed) ease;
+}
+
+.external-link:hover {
+    background-color: var(--current-tab-hover-bg);
+    color: var(--accent-blue);
+}
+
+/* Tabs Styles */
+.tabs-container {
+    display: flex;
+    border-bottom: 1px solid var(--current-tabs-container-border);
+    background-color: var(--current-card-bg);
+}
+
+.tab {
+    flex: 1;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    background: var(--current-tab-inactive-bg);
+    color: var(--current-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-speed) ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.tab:hover {
+    background-color: var(--current-tab-hover-bg);
+    color: var(--current-text-primary);
+}
+
+.tab.active {
+    background-color: var(--current-card-bg);
+    color: var(--accent-purple);
+    border-bottom: 2px solid var(--accent-purple);
+    font-weight: 600;
+}
+
+/* Card Content */
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+    overflow-y: auto;
+}
+
+/* GitHub Stats Grid */
+.github-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+@media (min-width: 768px) {
+    .github-stats {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.stat-item {
+    background-color: var(--current-quick-stat-item-bg);
+    padding: var(--spacing-md);
+    border-radius: 0.5rem;
+    text-align: center;
+    transition: transform var(--transition-speed) ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-2px);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--current-quick-stat-label-color);
+    font-weight: 500;
+}
+
+/* Stat Item Colors */
+.stat-total .stat-value {
+    color: var(--accent-purple);
+}
+
+.stat-open .stat-value {
+    color: var(--success-color);
+}
+
+.stat-merged .stat-value {
+    color: var(--info-color);
+}
+
+.stat-prod .stat-value {
+    color: var(--accent-orange);
+}
+
+/* Repository Info */
+.repo-info {
+    background-color: var(--current-permission-view-info-bg);
+    padding: var(--spacing-sm);
+    border-radius: 0.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.repo-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.9rem;
+    color: var(--current-text-primary);
+}
+
+.repo-user {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.8rem;
+    color: var(--current-text-secondary);
+}
+
+.sync-info {
+    border-top: 1px solid var(--current-border);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.last-sync,
+.repo-stats {
+    margin: 0.25rem 0;
+    font-size: 0.75rem;
+    color: var(--current-text-secondary);
+}
+
+.sync-message {
+    margin-top: var(--spacing-sm);
+    color: var(--current-text-secondary);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Pull Request List */
+.pr-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.pr-item {
+    border: 1px solid var(--current-border);
+    border-radius: 0.5rem;
+    padding: var(--spacing-sm);
+    background-color: var(--current-card-bg);
+    transition: border-color var(--transition-speed) ease;
+}
+
+.pr-item:hover {
+    border-color: var(--accent-purple);
+}
+
+.pr-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-xs);
+}
+
+.pr-title-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.pr-title {
+    color: var(--current-text-primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    line-height: 1.3;
+}
+
+.pr-title:hover {
+    color: var(--accent-blue);
+    text-decoration: underline;
+}
+
+.pr-meta {
+    margin-left: var(--spacing-sm);
+}
+
+.pr-date {
+    font-size: 0.75rem;
+    color: var(--current-text-secondary);
+    white-space: nowrap;
+}
+
+/* Status Badges */
+.status-open,
+.status-merged,
+.status-closed,
+.status-default {
+    padding: 0.125rem 0.5rem;
+    border-radius: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.025rem;
+}
+
+.status-open {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+}
+
+.status-merged {
+    background-color: rgba(52, 152, 219, 0.1);
+    color: var(--info-color);
+}
+
+.status-closed {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error-color);
+}
+
+.status-default {
+    background-color: var(--current-border);
+    color: var(--current-text-secondary);
+}
+
+/* PR Details */
+.pr-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.8rem;
+}
+
+.pr-branch,
+.pr-approvers,
+.pr-prod-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--current-text-secondary);
+}
+
+.pr-prod-indicator {
+    color: var(--success-color);
+}
+
+.pr-approvers {
+    color: var(--info-color);
+}
+
+/* Show More Container */
+.show-more-container {
+    text-align: center;
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--current-border);
+}
+
+/* Loading State */
+.loading-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.spinner-container {
+    text-align: center;
+}
+
+/* Error State */
+.error-state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+}
+
+.error-message {
+    text-align: center;
+    color: var(--error-color);
+}
+
+.error-icon {
+    margin-bottom: var(--spacing-sm);
+    --sds-c-icon-color-foreground-default: var(--error-color);
+}
+
+.error-message p {
+    margin: var(--spacing-sm) 0;
+    font-size: 0.9rem;
+}
+
+/* Initial State */
+.initial-state {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--current-text-secondary);
+}
+
+.initial-icon {
+    margin-bottom: var(--spacing-md);
+    --sds-c-icon-color-foreground-default: var(--accent-purple);
+}
+
+.initial-state h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--current-text-primary);
+    font-size: 1.1rem;
+}
+
+.initial-state p {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    color: var(--current-empty-state-color);
+}
+
+.empty-icon {
+    margin-bottom: var(--spacing-md);
+    --sds-c-icon-color-foreground-default: var(--current-empty-state-color);
+}
+
+.empty-state h4 {
+    margin: 0 0 var(--spacing-sm) 0;
+    color: var(--current-text-primary);
+    font-size: 1.1rem;
+}
+
+.empty-state p {
+    margin: 0 0 var(--spacing-md) 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .pr-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .pr-meta {
+        margin-left: 0;
+    }
+    
+    .pr-details {
+        font-size: 0.75rem;
+    }
+    
+    .github-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Icon color inheritance */
+lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}

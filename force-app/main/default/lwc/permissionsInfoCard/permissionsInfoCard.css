@@ -1,0 +1,169 @@
+/* permissionInfoCard.css */
+:host {
+    display: block;
+    height: 100%;
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.refresh-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent-blue);
+    transition: transform var(--transition-speed);
+    padding: 0.25rem;
+    line-height: 1;
+}
+.refresh-button:hover {
+    transform: rotate(180deg);
+}
+.refresh-button lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+    overflow-y: auto;
+}
+
+/* Stats Container (Copied from apexClassesCard.css for consistency - could be a shared utility if more complex) */
+.stats-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+}
+.stat-card {
+    flex: 1;
+    min-width: 120px;
+    padding: var(--spacing-sm);
+    border-radius: 0.5rem;
+    text-align: center;
+    color: white;
+}
+.stat-card.purple { background-color: var(--accent-purple); }
+.stat-card.blue { background-color: var(--accent-blue); }
+.stat-card.orange { background-color: var(--accent-orange); }
+/* .stat-card.green was in original but not used here, so omitted */
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+/* Permission View Info */
+.permission-view-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md); /* Space before tables */
+    border-radius: 0.5rem;
+    background-color: var(--current-permission-view-info-bg);
+    color: var(--current-text-primary);
+}
+.permission-view-info lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+    flex-shrink: 0;
+}
+.permission-view-info span {
+    font-size: 0.9rem;
+}
+
+/* Data Table for Permissions */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    margin-top: var(--spacing-sm);
+}
+.data-table th,
+.data-table td {
+    padding: var(--spacing-sm);
+    text-align: left;
+    border-bottom: 1px solid var(--current-table-border);
+    word-wrap: break-word;
+    font-size: 0.9rem;
+}
+.data-table th {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Badge for permission type */
+.badge { /* General badge style if not already globally defined */
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge.admin { /* Used for Custom permission type */
+    background-color: var(--accent-purple);
+    color: white;
+}
+.badge.active { /* Used for Standard permission type */
+    background-color: var(--accent-green);
+    color: white;
+}
+
+.empty-state {
+    padding: var(--spacing-lg) var(--spacing-md);
+    text-align: center;
+    color: var(--current-empty-state-color);
+    font-style: italic;
+}
+.section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-xs);
+    border-bottom: 1px solid var(--current-section-title-border);
+}

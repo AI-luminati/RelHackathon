@@ -1,0 +1,260 @@
+/* scheduledJobsCard.css */
+:host {
+    display: block;
+    height: 100%; 
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.refresh-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent-blue);
+    transition: transform var(--transition-speed);
+    padding: 0.25rem;
+    line-height: 1;
+}
+.refresh-button:hover {
+    transform: rotate(180deg);
+}
+.refresh-button lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+    overflow-y: auto; 
+}
+
+.jobs-section-tabs {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid var(--current-section-tabs-border);
+}
+
+.jobs-section-tabs .section-tab {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    font-weight: 500;
+    color: var(--current-text-secondary);
+    border-bottom: 3px solid transparent;
+    margin-right: var(--spacing-sm);
+    position: relative;
+    top: 2px; 
+}
+
+.jobs-section-tabs .section-tab:hover {
+    color: var(--current-text-primary);
+    background-color: var(--current-section-tab-hover-bg);
+}
+
+.jobs-section-tabs .section-tab.active {
+    color: var(--current-text-primary);
+    font-weight: 600;
+    border-bottom-color: var(--accent-blue);
+}
+
+.tabs-container {
+    display: flex;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--current-tabs-container-border);
+}
+
+.tabs-container .tab {
+    padding: var(--spacing-sm) var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    font-weight: 500;
+    color: var(--current-text-secondary);
+    border-bottom: 3px solid transparent;
+    margin-right: var(--spacing-xs);
+    border-radius: 0.35rem 0.35rem 0 0;
+    border: 1px solid transparent;
+    position: relative;
+    top: 1px; 
+}
+
+.tabs-container .tab:hover:not(.active) {
+    color: var(--current-text-primary);
+    background-color: var(--current-tab-hover-bg);
+}
+
+.tabs-container .tab.active {
+    color: var(--current-text-primary);
+    font-weight: 600;
+    border-color: var(--current-border); 
+    border-bottom-color: var(--accent-purple);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; 
+}
+
+.data-table th,
+.data-table td {
+    padding: var(--spacing-sm);
+    text-align: left;
+    border-bottom: 1px solid var(--current-table-border);
+    word-wrap: break-word; 
+    font-size: 0.9rem; 
+}
+
+.data-table th {
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap; 
+}
+
+.data-table th:hover {
+    background-color: var(--current-table-th-hover-bg);
+}
+
+.sort-icon {
+    margin-left: var(--spacing-xs);
+    vertical-align: middle;
+    --sds-c-icon-color-foreground-default: currentColor; 
+}
+
+.my-jobs-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+    gap: var(--spacing-md);
+}
+
+.my-job-card {
+    border-radius: var(--card-border-radius); 
+    transition: all var(--transition-speed);
+    background-color: var(--current-my-job-card-bg); 
+    border: 1px solid var(--current-my-job-card-border); 
+    box-shadow: var(--current-card-shadow); 
+    overflow: hidden;
+}
+
+.my-job-card:hover {
+    box-shadow: var(--current-card-shadow-hover); 
+    transform: translateY(-2px); 
+}
+
+.my-job-item { 
+    padding: var(--spacing-md);
+    border-left-width: 4px;
+    border-left-style: solid;
+    background-color: var(--current-my-job-item-bg);
+}
+
+.my-job-item.running { border-left-color: var(--info-color); }
+.my-job-item.completed { border-left-color: var(--success-color); }
+.my-job-item.failed { border-left-color: var(--error-color); }
+.my-job-item.waiting { border-left-color: var(--warning-color); }
+.my-job-item:not(.running):not(.completed):not(.failed):not(.waiting) {
+    border-left-color: var(--current-border);
+}
+
+.my-job-name {
+    font-weight: 600;
+    font-size: 1rem; 
+    margin-bottom: var(--spacing-xs);
+    word-break: break-word;
+    color: var(--current-text-primary);
+}
+
+.my-job-status {
+    font-size: 0.9rem;
+    margin-bottom: var(--spacing-sm);
+    text-transform: capitalize;
+    color: var(--current-text-secondary);
+}
+
+.my-job-time {
+    font-size: 0.85rem;
+    margin-bottom: var(--spacing-xs);
+    display: flex;
+    justify-content: space-between;
+    color: var(--current-text-primary);
+}
+
+.time-label {
+    color: var(--current-text-secondary);
+    margin-right: var(--spacing-xs);
+}
+
+.my-job-progress {
+    margin-top: var(--spacing-sm);
+}
+
+.progress-label {
+    font-size: 0.8rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--current-text-secondary);
+}
+
+.progress-container {
+    height: 8px; 
+    background-color: var(--current-progress-container-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-xs);
+}
+
+.progress-bar {
+    height: 100%;
+    transition: width 0.5s ease-out;
+}
+
+/* Progress bar color classes */
+.progress-bar.progress-bar-info { background-color: var(--info-color); }
+.progress-bar.progress-bar-success { background-color: var(--success-color); }
+.progress-bar.progress-bar-error { background-color: var(--error-color); }
+.progress-bar.progress-bar-warning { background-color: var(--warning-color); }
+.progress-bar.progress-bar-default { background-color: var(--current-border); }
+
+
+.empty-state {
+    padding: var(--spacing-lg) var(--spacing-md); 
+    text-align: center;
+    color: var(--current-empty-state-color);
+    font-style: italic;
+}

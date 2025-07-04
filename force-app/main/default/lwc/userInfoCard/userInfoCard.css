@@ -1,0 +1,101 @@
+/* userInfoCard.css */
+:host {
+    display: block;
+    height: 100%;
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+}
+
+/* User Info Specific Styles */
+.user-info {
+    display: flex;
+    align-items: center;
+}
+.user-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: var(--spacing-md);
+    border: 2px solid var(--accent-purple);
+    flex-shrink: 0;
+}
+.user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.user-details h2 {
+    margin: 0 0 0.25rem 0;
+    font-size: 1.25rem;
+    word-break: break-all;
+}
+.user-details p {
+    margin: 0 0 0.5rem 0;
+    color: var(--current-user-details-p-color);
+    word-break: break-all;
+}
+.user-badges {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+}
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+.badge.admin {
+    background-color: var(--accent-purple);
+    color: white;
+}
+.badge.active {
+    background-color: var(--accent-green);
+    color: white;
+}

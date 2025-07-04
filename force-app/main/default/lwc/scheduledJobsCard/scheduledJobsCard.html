@@ -1,0 +1,151 @@
+<!-- scheduledJobsCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:clock" size="small" class="card-header-icon"></lightning-icon>
+                Scheduled Jobs
+            </h3>
+            <button class="refresh-button" title="Refresh Scheduled Jobs" onclick={handleRefresh}>
+                <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+            </button>
+        </div>
+        <div class="card-content">
+            <!-- Jobs Section Tabs -->
+            <div class="jobs-section-tabs">
+                <div class={runningJobsSectionClass} onclick={showRunningJobs}>
+                    Jobs Running
+                </div>
+                <div class={myJobsSectionClass} onclick={showMyJobs}>
+                    Jobs Created By Me ({_scheduledJobsData.myJobsCount})
+                </div>
+            </div>
+
+            <!-- Running Jobs Section -->
+            <div if:true={isRunningJobsSectionActive}>
+                <div class="tabs-container">
+                    <div class={upcomingTabClass} onclick={showUpcomingJobs}>
+                        Upcoming ({_scheduledJobsData.upcomingCount})
+                    </div>
+                    <div class={succeededTabClass} onclick={showSucceededJobs}>
+                        Succeeded ({_scheduledJobsData.succeededCount})
+                    </div>
+                    <div class={failedTabClass} onclick={showFailedJobs}>
+                        Failed ({_scheduledJobsData.failedCount})
+                    </div>
+                </div>
+
+                <!-- Table for Upcoming, Succeeded, Failed jobs -->
+                <template if:true={displayedJobs.length}>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort-field="CronJobDetail.Name" onclick={handleSort}>
+                                    Job Name
+                                    <lightning-icon if:true={isSortedByJobName} icon-name={jobNameSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="NextFireTime" onclick={handleSort}>
+                                    Next Run
+                                    <lightning-icon if:true={isSortedByNextRun} icon-name={nextRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="PreviousFireTime" onclick={handleSort}>
+                                    Last Run
+                                    <lightning-icon if:true={isSortedByLastRun} icon-name={lastRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="State" onclick={handleSort}>
+                                    State
+                                    <lightning-icon if:true={isSortedByState} icon-name={stateSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="CreatedBy.Name" onclick={handleSort}>
+                                    Submitted By
+                                    <lightning-icon if:true={isSortedByCreatedBy} icon-name={createdBySortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={displayedJobs} for:item="job">
+                                <tr key={job.Id}>
+                                    <td data-label="Job Name">{job.CronJobDetail.Name}</td>
+                                    <td data-label="Next Run">{job.formattedNextFireTime}</td>
+                                    <td data-label="Last Run">{job.formattedPreviousFireTime}</td>
+                                    <td data-label="State">{job.State}</td>
+                                    <td data-label="Submitted By">{job.CreatedBy.Name}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={displayedJobs.length}>
+                     <div class="empty-state">
+                        <template if:true={isUpcomingTabActive}>No upcoming jobs found.</template>
+                        <template if:true={isSucceededTabActive}>No succeeded jobs found.</template>
+                        <template if:true={isFailedTabActive}>No failed jobs found.</template>
+                    </div>
+                </template>
+            </div>
+
+            <!-- My Jobs Section -->
+            <div if:true={isMyJobsSectionActive}>
+                <div class="tabs-container">
+                    <div class={myUpcomingTabClass} onclick={showMyUpcomingJobs}>
+                        Upcoming ({_scheduledJobsData.myUpcomingCount})
+                    </div>
+                    <div class={mySucceededTabClass} onclick={showMySucceededJobs}>
+                        Succeeded ({_scheduledJobsData.mySucceededCount})
+                    </div>
+                    <div class={myFailedTabClass} onclick={showMyFailedJobs}>
+                        Failed ({_scheduledJobsData.myFailedCount})
+                    </div>
+                </div>
+
+                <!-- Table for My Jobs -->
+                <template if:true={displayedMyJobs.length}>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort-field="CronJobDetail.Name" onclick={handleMyJobsSort}>
+                                    Job Name
+                                    <lightning-icon if:true={isSortedByMyJobName} icon-name={myJobNameSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="NextFireTime" onclick={handleMyJobsSort}>
+                                    Next Run
+                                    <lightning-icon if:true={isSortedByMyNextRun} icon-name={myNextRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="PreviousFireTime" onclick={handleMyJobsSort}>
+                                    Last Run
+                                    <lightning-icon if:true={isSortedByMyLastRun} icon-name={myLastRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="State" onclick={handleMyJobsSort}>
+                                    State
+                                    <lightning-icon if:true={isSortedByMyState} icon-name={myStateSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                                <th data-sort-field="CreatedBy.Name" onclick={handleMyJobsSort}>
+                                    Submitted By
+                                    <lightning-icon if:true={isSortedByMyCreatedBy} icon-name={myCreatedBySortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={displayedMyJobs} for:item="job">
+                                <tr key={job.Id}>
+                                    <td data-label="Job Name">{job.CronJobDetail.Name}</td>
+                                    <td data-label="Next Run">{job.formattedNextFireTime}</td>
+                                    <td data-label="Last Run">{job.formattedPreviousFireTime}</td>
+                                    <td data-label="State">{job.State}</td>
+                                    <td data-label="Submitted By">{job.CreatedBy.Name}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={displayedMyJobs.length}>
+                    <div class="empty-state">
+                        <template if:true={isMyUpcomingTabActive}>No upcoming jobs found.</template>
+                        <template if:true={isMySucceededTabActive}>No succeeded jobs found.</template>
+                        <template if:true={isMyFailedTabActive}>No failed jobs found.</template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

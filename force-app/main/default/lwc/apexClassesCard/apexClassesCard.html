@@ -1,0 +1,98 @@
+<!-- apexClassesCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:apex" size="small" class="card-header-icon"></lightning-icon>
+                Apex Classes ({apexClassesData.classCount})
+            </h3>
+            <button class="refresh-button" title="Refresh Apex Classes" onclick={handleRefresh}>
+                <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+            </button>
+        </div>
+        <div class="card-content">
+            <div class="stats-container">
+                <a href={apexClassesSetupLink} class="card-block-link" style="flex: 1;"> <!-- Added style flex:1 for link within flex container -->
+                    <div class="stat-card purple">
+                        <div class="stat-value">{apexClassesData.classCount}</div>
+                        <div class="stat-label">TOTAL CLASSES</div>
+                    </div>
+                </a>
+                <div class="stat-card green">
+                    <div class="stat-value">{apexClassesData.myClassesCount}</div>
+                    <div class="stat-label">CREATED BY ME</div>
+                </div>
+                <div class="stat-card orange">
+                    <div class="stat-value">{apexClassesData.lowCoverageCount}</div>
+                    <div class="stat-label">LOW COVERAGE</div>
+                </div>
+            </div>
+
+            <template if:false={apexClassesData.canViewDetails}>
+                <div class="permission-message">
+                    <lightning-icon icon-name="utility:warning" size="small" class="permission-message-icon"></lightning-icon>
+                    <p>You do not have permission to view the list of all Apex classes. Counts above represent all classes in the org.</p>
+                </div>
+            </template>
+
+            <template if:true={apexClassesData.canViewDetails}>
+                <!-- My Classes Section -->
+                <div if:true={apexClassesData.myClasses.length} class="section-title">Classes Created By Me</div>
+                <template if:true={apexClassesData.myClasses.length}>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>API Version</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={apexClassesData.myClasses} for:item="cls">
+                                <tr key={cls.Id}>
+                                    <td data-label="Name">{cls.Name}</td>
+                                    <td data-label="API Version">{cls.ApiVersion}</td>
+                                    <td data-label="Status">{cls.Status}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={apexClassesData.myClasses.length}>
+                    <div if:true={apexClassesData.canViewDetails} class="empty-state">No classes created by you.</div>
+                </template>
+                
+                <!-- Low Coverage Classes Section -->
+                <div if:true={apexClassesData.lowCoverageClasses.length} class="section-title">Classes With Low Coverage (less than 75%)</div>
+                <template if:true={apexClassesData.lowCoverageClasses.length}>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Coverage %</th>
+                                <th>Created By</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={apexClassesData.lowCoverageClasses} for:item="cls">
+                                <tr key={cls.id}> <!-- Original Apex returns 'id' not 'Id' for ApexClassCoverage wrapper -->
+                                    <td data-label="Name">{cls.name}</td>
+                                    <td data-label="Coverage %">
+                                        <div class="coverage-bar-container">
+                                            <div class="coverage-bar" style={cls.coverageStyle}></div>
+                                            <span class="coverage-text">{cls.coverage}%</span>
+                                        </div>
+                                    </td>
+                                    <td data-label="Created By">{cls.createdByName}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </template>
+                <template if:false={apexClassesData.lowCoverageClasses.length}>
+                     <div if:true={apexClassesData.canViewDetails} class="empty-state">No classes with low coverage found.</div>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

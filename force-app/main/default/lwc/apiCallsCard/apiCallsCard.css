@@ -1,0 +1,96 @@
+/* apiCallsCard.css */
+:host {
+    display: block;
+    height: 100%;
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+}
+
+/* API Usage Specific Styles */
+.api-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-md);
+}
+.api-stat-item {
+    text-align: center;
+}
+.api-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+.api-stat-label {
+    font-size: 0.8rem;
+    color: var(--current-api-stat-label-color);
+    text-transform: uppercase;
+}
+.progress-container {
+    height: 8px;
+    background-color: var(--current-progress-container-bg);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-xs);
+}
+.progress-bar { /* Style for width and background-color is applied inline via JS */
+    height: 100%;
+    transition: width 0.5s ease-out;
+}
+.usage-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+}
+.usage-status { /* Base class */
+    font-weight: 600;
+}
+.usage-status.good { color: var(--success-color); }
+.usage-status.warning { color: var(--warning-color); }
+.usage-status.error { color: var(--error-color); }
+
+.usage-percentage {
+    color: var(--current-usage-percentage-color);
+}

@@ -1,0 +1,33 @@
+<!-- apiCallsCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:api" size="small" class="card-header-icon"></lightning-icon>
+                Org API Usage (24h)
+            </h3>
+        </div>
+        <div class="card-content">
+            <div class="api-stats">
+                <div class="api-stat-item">
+                    <div class="api-stat-value">{apiUsage.used}</div>
+                    <div class="api-stat-label">USED</div>
+                </div>
+                <div class="api-stat-item">
+                    <div class="api-stat-value">{apiUsage.remaining}</div>
+                    <div class="api-stat-label">REMAINING</div>
+                </div>
+            </div>
+            <div>
+                <div>Limit: {apiUsage.limit}</div>
+                <div class="progress-container">
+                    <div class="progress-bar" style={apiUsageStyle}></div>
+                </div>
+                <div class="usage-info">
+                    <div class={usageStatusClass}>{usageStatusText}</div>
+                    <div class="usage-percentage">{apiUsagePercentage}%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,74 @@
+/* quickStatsCard.css */
+:host {
+    display: block;
+    height: 100%;
+}
+
+.card {
+    background-color: var(--current-card-bg);
+    border: 1px solid var(--current-border);
+    box-shadow: var(--current-card-shadow);
+    border-radius: var(--card-border-radius);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.card:hover {
+    transform: scale(1.03);
+    box-shadow: var(--current-card-shadow-hover);
+}
+
+.card-header {
+    padding: var(--spacing-sm) var(--spacing-md);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--current-border);
+    color: var(--current-text-primary);
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.card-header-icon {
+    margin-right: var(--spacing-xs);
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+.card-content {
+    padding: var(--card-padding);
+    flex: 1;
+    color: var(--current-text-primary);
+}
+
+/* Quick Stats Specific Styles */
+.quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-sm);
+}
+.quick-stat-item {
+    background-color: var(--current-quick-stat-item-bg);
+    padding: var(--spacing-md);
+    border-radius: 0.5rem;
+    text-align: center;
+}
+.quick-stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent-purple);
+    margin-bottom: 0.25rem;
+}
+.quick-stat-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: var(--current-quick-stat-label-color);
+}

@@ -1,0 +1,71 @@
+<!-- permissionsInfoCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:key" size="small" class="card-header-icon"></lightning-icon>
+                Permissions Information ({permissionsData.permissionCount})
+            </h3>
+            <button class="refresh-button" title="Refresh Permissions Info" onclick={handleRefresh}>
+                <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+            </button>
+        </div>
+
+        <div class="card-content">
+            <div class="stats-container">
+                <a href={permissionSetsSetupLink} class="card-block-link" style="flex: 1;">
+                    <div class="stat-card purple">
+                        <div class="stat-value">{permissionsData.permissionCount}</div>
+                        <div class="stat-label">TOTAL SETS</div>
+                    </div>
+                </a>
+                <a href={userProfileLink} class="card-block-link" style="flex: 1;">
+                    <div class="stat-card blue">
+                        <div class="stat-value">{permissionsData.userPermissionCount}</div>
+                        <div class="stat-label">ON USER</div>
+                    </div>
+                </a>
+                <div class="stat-card orange">
+                    <div class="stat-value">{permissionsData.myPermissionCount}</div>
+                    <div class="stat-label">CREATED BY ME</div>
+                </div>
+            </div>
+
+            <div class="permission-view-info">
+                <lightning-icon icon-name="utility:shield" size="small"></lightning-icon>
+                <span>{viewAccessLabel}</span>
+            </div>
+
+            <!-- Permission Sets Created By Me -->
+            <template if:true={myPermissionsWithClass.length}>
+                <div class="section-title">Permission Sets Created By Me</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Label</th>
+                            <th>API Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={myPermissionsWithClass} for:item="perm">
+                            <tr key={perm.Id}>
+                                <td data-label="Label">{perm.Label}</td>
+                                <td data-label="API Name">{perm.Name}</td>
+                                <td data-label="Type">
+                                    <span class={perm.badgeClass}>
+                                    {perm.permissionType} <!-- Use precomputed value -->
+                                    </span>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+
+            <template if:false={myPermissionsWithClass.length}>
+                <div class="empty-state">No permission sets created by you.</div>
+            </template>
+        </div>
+    </div>
+</template>

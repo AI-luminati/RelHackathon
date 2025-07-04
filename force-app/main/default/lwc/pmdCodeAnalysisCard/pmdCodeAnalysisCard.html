@@ -1,0 +1,170 @@
+<!-- pmdCodeAnalysisCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <img src={pmdIconUrl} alt="PMD Analysis" class="card-header-icon">
+                PMD Code Analysis
+            </h3>
+            <div class="header-actions">
+                <button class="refresh-button" title="Refresh Class List" onclick={handleRefreshCard}>
+                    <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="card-content">
+            <!-- Loading State -->
+            <template if:true={isLoading}>
+                <div class="card-content loading">
+                    <lightning-spinner alternative-text="Loading Apex classes..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:false={isLoading}>
+                <!-- Class Selection Section -->
+                <div class="selection-container">
+                    <lightning-combobox
+                        name="apexClass"
+                        label="Select Apex Class"
+                        placeholder="Choose an Apex class to analyze"
+                        options={classOptions}
+                        value={selectedClassId}
+                        onchange={handleClassSelection}
+                        class="class-selector"
+                        variant="label-stacked">
+                    </lightning-combobox>
+                    
+                    <lightning-button
+                        variant={scanButtonVariant}
+                        label={scanButtonLabel}
+                        onclick={handleScanClass}
+                        disabled={scanButtonDisabled}
+                        icon-name="utility:search"
+                        class="scan-button">
+                    </lightning-button>
+                </div>
+
+                <!-- Scanning Progress -->
+                <template if:true={isScanning}>
+                    <div class="scanning-container">
+                        <lightning-spinner alternative-text="Scanning class..." size="medium"></lightning-spinner>
+                        <p class="scanning-text">Analyzing {selectedClassName} with PMD...</p>
+                        <div class="scanning-steps">
+                            <div class="step-item active">
+                                <lightning-icon icon-name="utility:check" size="x-small"></lightning-icon>
+                                <span>Preparing code</span>
+                            </div>
+                            <div class="step-item active">
+                                <lightning-icon icon-name="utility:spinner" size="x-small" class="spinning"></lightning-icon>
+                                <span>Running PMD analysis</span>
+                            </div>
+                            <div class="step-item">
+                                <lightning-icon icon-name="utility:clock" size="x-small"></lightning-icon>
+                                <span>Processing results</span>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Error State -->
+                <template if:true={error}>
+                    <div class="error-container">
+                        <lightning-icon icon-name="utility:error" variant="error" size="small" class="error-icon"></lightning-icon>
+                        <div class="error-content">
+                            <h4 class="error-title">Analysis Error</h4>
+                            <p class="error-message">{error}</p>
+                            <lightning-button
+                                variant="outline-brand"
+                                label="Try Again"
+                                onclick={handleScanClass}
+                                icon-name="utility:refresh"
+                                class="retry-button">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Results Section -->
+                <template if:true={hasFindings}>
+                    <div class="results-section">
+                        <div class="results-header">
+                            <h4 class="results-title">
+                                <lightning-icon icon-name="utility:warning" size="small" class="results-icon"></lightning-icon>
+                                {findingsHeaderText}
+                            </h4>
+                            <div class="results-stats">
+                                <span class="stat-item">
+                                    <lightning-icon icon-name="utility:apex" size="x-small"></lightning-icon>
+                                    {selectedClassName}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="datatable-container">
+                            <lightning-datatable
+                                key-field="id"
+                                data={findings}
+                                columns={findingsColumns}
+                                onrowaction={handleRowAction}
+                                hide-checkbox-column="true"
+                                show-row-number-column="false"
+                                class="findings-table"
+                                resize-column-disabled="true">
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- AI Suggestion Section -->
+                <template if:true={showSuggestion}>
+                    <div class="suggestion-section">
+                        <div class="suggestion-header">
+                            <h4 class="suggestion-title">
+                                <lightning-icon icon-name="utility:einstein" size="small" class="ai-icon"></lightning-icon>
+                                {suggestionTitle}
+                            </h4>
+                            <template if:true={isSuggesting}>
+                                <lightning-spinner alternative-text="Generating suggestion..." size="x-small" class="suggestion-spinner"></lightning-spinner>
+                            </template>
+                        </div>
+                        
+                        <template if:false={isSuggesting}>
+                            <div class="suggestion-content">
+                                <div class="suggestion-wrapper">
+                                    <div class="suggestion-text" lwc:dom="manual"></div>
+                                </div>
+                                <div class="suggestion-footer">
+                                    <span class="powered-by">
+                                        Powered by AI
+                                        <lightning-icon icon-name="utility:sparkles" size="x-small" class="sparkle-icon"></lightning-icon>
+                                    </span>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Empty State -->
+                <template if:true={showEmptyState}>
+                    <div class="empty-state">
+                        <lightning-icon icon-name="utility:apex" size="large" class="empty-state-icon"></lightning-icon>
+                        <h4 class="empty-state-title">PMD Code Analysis</h4>
+                        <p class="empty-state-message">{emptyStateMessage}</p>
+                        <template if:true={hasClassSelected}>
+                            <template if:false={isScanning}>
+                                <lightning-button
+                                    variant="brand"
+                                    label="Start Analysis"
+                                    onclick={handleScanClass}
+                                    icon-name="utility:search"
+                                    class="start-analysis-button">
+                                </lightning-button>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

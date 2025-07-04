@@ -1,0 +1,38 @@
+<!-- userInfoCard.html -->
+<template>
+    <div class="card">
+        <div class="card-header">
+            <h3>
+                <lightning-icon icon-name="utility:user" size="small" class="card-header-icon"></lightning-icon>
+                User Information
+            </h3>
+        </div>
+        <div class="card-content">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <template if:true={userInfo.SmallPhotoUrl}>
+                            <img src={userInfo.SmallPhotoUrl} alt={userInfo.Name} />
+                        </template>
+                        <template if:false={userInfo.SmallPhotoUrl}>
+                            <lightning-avatar 
+                                variant="circle" 
+                                class="slds-m-right_small"
+                                fallback-icon-name="standard:user" 
+                                alternative-text="User Avatar">
+                            </lightning-avatar>
+                        </template>
+                    </div>
+                    <div class="user-details">
+                        <h2>
+                          <a href={userProfileLink} target="_blank" class="card-block-link">{userInfo.Name}</a>
+                        </h2>
+                        <p>{userInfo.Email}</p>
+                        <div class="user-badges">
+                            <span class="badge admin">ADMIN</span>
+                            <span class="badge active">ACTIVE</span>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</template>
