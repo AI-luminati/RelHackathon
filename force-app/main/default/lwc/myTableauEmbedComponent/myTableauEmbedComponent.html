@@ -1,0 +1,11 @@
+<!-- myTableauEmbedComponent.html -->
+<template>
+    <div class="tableau-embed-container">
+        <p if:true={prefix}>{prefix}</p>
+        <!-- This div will host the embedded Tableau viz -->
+        <div lwc:dom="manual" class="tableau-viz"></div>
+        <p if:true={suffix}>{suffix}</p>
+        <div if:true={errorMessage} class="error-message" style="color: red;">{errorMessage}</div>
+        <div if:false={apiLoaded} class="loading-message">Loading Tableau Embedding API...</div>
+    </div>
+</template>

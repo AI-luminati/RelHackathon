@@ -1,95 +1,98 @@
 <!-- githubCard.html -->
 <template>
-    <div class="card">
-        <!-- Card Header -->
-        <div class="card-header">
-            <h3>
-                <lightning-icon icon-name="utility:github" size="small" class="card-header-icon"></lightning-icon>
-                GitHub Pull Requests
-            </h3>
-            <div class="header-actions">
-                <a href={githubRepoUrl} target="_blank" class="external-link" title="Open GitHub Repository">
-                    <lightning-icon icon-name="utility:new_window" size="xx-small"></lightning-icon>
-                </a>
-                <lightning-button-icon 
-                    icon-name="utility:sync" 
-                    variant="border-filled" 
-                    alternative-text="Refresh from GitHub API" 
-                    size="small"
-                    onclick={handleRefreshFromAPI}
-                    disabled={isRefreshing}
-                    title="Sync with GitHub API">
-                </lightning-button-icon>
-                <lightning-button-icon 
-                    icon-name="utility:refresh" 
-                    variant="border-filled" 
-                    alternative-text="Refresh from Salesforce" 
-                    size="small"
-                    onclick={handleRefresh}
-                    disabled={isLoading}
-                    title="Refresh from Salesforce Data">
-                </lightning-button-icon>
-            </div>
-        </div>
-
-        <!-- Initial State (before first load) -->
-        <template if:true={showInitialState}>
-            <div class="card-content">
-                <div class="initial-state">
-                    <lightning-icon icon-name="utility:github" size="large" class="initial-icon"></lightning-icon>
-                    <h4>GitHub Pull Requests</h4>
-                    <p>Click the refresh button to load your pull requests from <strong>{repoOwner}/{repoName}</strong></p>
-                    <lightning-button 
-                        label="Load Pull Requests" 
-                        onclick={handleRefresh} 
-                        variant="brand" 
+    <!-- Show nothing initially to prevent flash -->
+    <template if:true={isReady}>
+        <div class="card">
+            <!-- Card Header -->
+            <div class="card-header">
+                <h3>
+                    <lightning-icon icon-name="utility:github" size="small" class="card-header-icon"></lightning-icon>
+                    GitHub Pull Requests
+                </h3>
+                <div class="header-actions">
+                    <a href={githubRepoUrl} target="_blank" class="external-link" title="Open GitHub Repository">
+                        <lightning-icon icon-name="utility:new_window" size="xx-small"></lightning-icon>
+                    </a>
+                    <lightning-button-icon 
+                        icon-name="utility:sync" 
+                        variant="border-filled" 
+                        alternative-text="Refresh from GitHub API" 
                         size="small"
-                        icon-name="utility:refresh">
-                    </lightning-button>
+                        onclick={handleRefreshFromAPI}
+                        disabled={isRefreshing}
+                        title="Sync with GitHub API">
+                    </lightning-button-icon>
+                    <lightning-button-icon 
+                        icon-name="utility:refresh" 
+                        variant="border-filled" 
+                        alternative-text="Refresh from Salesforce" 
+                        size="small"
+                        onclick={handleRefresh}
+                        disabled={isLoading}
+                        title="Refresh from Salesforce Data">
+                    </lightning-button-icon>
                 </div>
             </div>
-        </template>
 
-        <!-- Refreshing State -->
-        <template if:true={isRefreshing}>
-            <div class="card-content loading-state">
-                <div class="spinner-container">
-                    <lightning-spinner alternative-text="Syncing with GitHub API..." size="small"></lightning-spinner>
-                    <p class="sync-message">Fetching latest data from GitHub...</p>
+            <!-- Initial State (before first load) -->
+            <template if:true={showInitialState}>
+                <div class="card-content">
+                    <div class="initial-state">
+                        <lightning-icon icon-name="utility:github" size="large" class="initial-icon"></lightning-icon>
+                        <h4>GitHub Pull Requests</h4>
+                        <p>Click the refresh button to load your pull requests from <strong>{repositoryName}</strong></p>
+                        <lightning-button 
+                            label="Load Pull Requests" 
+                            onclick={handleRefresh} 
+                            variant="brand" 
+                            size="small"
+                            icon-name="utility:refresh">
+                        </lightning-button>
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
 
-        <!-- Loading State -->
-        <template if:true={isLoading}>
-            <div class="card-content loading-state">
-                <div class="spinner-container">
-                    <lightning-spinner alternative-text="Loading GitHub data..." size="small"></lightning-spinner>
+            <!-- Refreshing State -->
+            <template if:true={isRefreshing}>
+                <div class="card-content loading-state">
+                    <div class="spinner-container">
+                        <lightning-spinner alternative-text="Syncing with GitHub API..." size="small"></lightning-spinner>
+                        <p class="sync-message">Fetching latest data from GitHub...</p>
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
 
-        <!-- Error State -->
-        <template if:true={error}>
-            <div class="card-content error-state">
-                <div class="error-message">
-                    <lightning-icon icon-name="utility:error" size="small" class="error-icon"></lightning-icon>
-                    <p>{error}</p>
-                    <lightning-button 
-                        label="Retry" 
-                        onclick={handleRefresh} 
-                        variant="brand" 
-                        size="small">
-                    </lightning-button>
+            <!-- Loading State -->
+            <template if:true={showLoadingState}>
+                <div class="card-content loading-state">
+                    <div class="spinner-container">
+                        <lightning-spinner alternative-text="Loading GitHub data..." size="small"></lightning-spinner>
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
 
-        <!-- Main Content -->
-        <template if:false={isLoading}>
-            <template if:false={isRefreshing}>
-                <template if:false={error}>
-                    <template if:false={showInitialState}>
+            <!-- Error State -->
+            <template if:true={error}>
+                <template if:false={isLoading}>
+                    <template if:false={isRefreshing}>
+                        <div class="card-content error-state">
+                            <div class="error-message">
+                                <lightning-icon icon-name="utility:error" size="small" class="error-icon"></lightning-icon>
+                                <p>{error}</p>
+                                <lightning-button 
+                                    label="Retry" 
+                                    onclick={handleRefresh} 
+                                    variant="brand" 
+                                    size="small">
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+
+            <!-- Main Content -->
+            <template if:true={showMainContent}>
                 <!-- Tabs -->
                 <div class="tabs-container">
                     <button class={overviewTabClass} data-tab="overview" onclick={handleTabChange}>
@@ -142,7 +145,7 @@
                             <div class="empty-state">
                                 <lightning-icon icon-name="utility:github" size="large" class="empty-icon"></lightning-icon>
                                 <h4>No Pull Requests Found</h4>
-                                <p>No pull requests found for user <strong>{githubUsername}</strong> in the repository <strong>{repoOwner}/{repoName}</strong>.</p>
+                                <p>No pull requests found for user <strong>{githubUsername}</strong> in the repository <strong>{repositoryName}</strong>.</p>
                             </div>
                         </template>
                     </div>
@@ -182,7 +185,7 @@
                                             <template if:true={pr.hasApprovers}>
                                                 <div class="pr-approvers">
                                                     <lightning-icon icon-name="utility:approval" size="xx-small"></lightning-icon>
-                                                    Approved by: {pr.approversText}
+                                                    Approver: {pr.approversText}
                                                 </div>
                                             </template>
                                         </div>
@@ -219,9 +222,7 @@
                         </template>
                     </div>
                 </template>
-                </template>
-                </template>
             </template>
-        </template>
-    </div>
+        </div>
+    </template>
 </template>

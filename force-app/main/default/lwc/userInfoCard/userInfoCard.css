@@ -52,37 +52,50 @@
 /* User Info Specific Styles */
 .user-info {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    gap: var(--spacing-md);
 }
+
 .user-avatar {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: var(--spacing-md);
     border: 2px solid var(--accent-purple);
     flex-shrink: 0;
 }
+
 .user-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
+
+.user-details {
+    flex: 1;
+    min-width: 0; /* Prevents flex item from overflowing */
+}
+
 .user-details h2 {
     margin: 0 0 0.25rem 0;
     font-size: 1.25rem;
-    word-break: break-all;
+    word-break: break-word;
 }
+
 .user-details p {
     margin: 0 0 0.5rem 0;
     color: var(--current-user-details-p-color);
-    word-break: break-all;
+    word-break: break-word;
+    font-size: 0.9rem;
 }
+
 .user-badges {
     display: flex;
     gap: var(--spacing-xs);
-    margin-top: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
 }
+
 .badge {
     display: inline-flex;
     align-items: center;
@@ -91,11 +104,119 @@
     font-size: 0.75rem;
     font-weight: 600;
 }
+
 .badge.admin {
     background-color: var(--accent-purple);
     color: white;
 }
+
 .badge.active {
     background-color: var(--accent-green);
     color: white;
+}
+
+/* NEW: Learning Links Styles */
+.learning-links {
+    margin-top: var(--spacing-sm);
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--current-border);
+}
+
+.learning-title {
+    margin: 0 0 var(--spacing-xs) 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--current-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.learning-icon {
+    --sds-c-icon-color-foreground-default: var(--accent-blue);
+}
+
+.learning-buttons {
+    display: flex;
+    gap: var(--spacing-xs);
+    flex-wrap: wrap;
+}
+
+.learning-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 1.5rem;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all var(--transition-speed) ease;
+    border: 1px solid transparent;
+}
+
+.learning-link:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.trailhead-link {
+    background: linear-gradient(135deg, #00A1E0, #0070D2);
+    color: white;
+    border-color: #0070D2;
+}
+
+.trailhead-link:hover {
+    background: linear-gradient(135deg, #0070D2, #005FB2);
+    color: white;
+}
+
+.explore-link {
+    background-color: transparent;
+    color: var(--accent-blue);
+    border-color: var(--accent-blue);
+}
+
+.explore-link:hover {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.learning-link lightning-icon {
+    --sds-c-icon-color-foreground-default: currentColor;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .user-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .user-details {
+        width: 100%;
+    }
+    
+    .learning-buttons {
+        justify-content: center;
+    }
+    
+    .user-badges {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .learning-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .learning-link {
+        justify-content: center;
+        width: 100%;
+    }
 }

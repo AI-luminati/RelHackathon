@@ -1,0 +1,522 @@
+<!-- dashboardContainer.html -->
+<template>
+    <div class={containerClass}>
+        <div class="theme-toggle-container">
+            <div class="toggle-label">
+                <template if:true={isDarkMode}>
+                    <lightning-icon icon-name="utility:daylight" size="small" alternative-text="Light Mode" class="toggle-icon"></lightning-icon>
+                </template>
+                <template if:false={isDarkMode}>
+                    <lightning-icon icon-name="utility:night" size="small" alternative-text="Dark Mode" class="toggle-icon"></lightning-icon>
+                </template>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" checked={isDarkMode} onchange={handleThemeToggle} />
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <!-- Dashboard Header - 3 Column Layout -->
+        <div class="dashboard-header">
+            <!-- User Info Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:user" size="small" class="card-header-icon"></lightning-icon>
+                        User Information
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <img src={userInfo.SmallPhotoUrl} alt={userInfo.Name} />
+                        </div>
+                        <div class="user-details">
+                            <h2>{userInfo.Name}</h2>
+                            <p>{userInfo.Email}</p>
+                            <div class="user-badges">
+                                <span class="badge admin">ADMIN</span>
+                                <span class="badge active">ACTIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                    <!-- Trailhead Progress Card -->
+        <div class="card">
+            <div class="card-header">
+                <h3>
+                    <lightning-icon icon-name="utility:trail" size="small" class="card-header-icon"></lightning-icon>
+                    Trailhead Progress
+                </h3>
+            </div>
+            <div class="card-content">
+                <template if:true={trailheadInfo}>
+                    <div class="trailhead-stats">
+                        <div>Points: <strong>{trailheadInfo.points}</strong></div>
+                        <div>Ranger Level: <strong>{trailheadInfo.rangerLevel}</strong></div>
+                        <div>Superbadges Completed: <strong>{trailheadInfo.superbadgesCompleted}</strong></div>
+                        <div>Badges: <strong>{trailheadInfo.badges}</strong></div>
+                    </div>
+                </template>
+                <template if:true={recommendedBadges.length}>
+                    <div class="recommended-badges">
+                        <span>Recommended Modules:</span>
+                        <template for:each={recommendedBadges} for:item="badge">
+                            <span key={badge} class="badge trailhead">{badge}</span>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+            <!-- API Usage Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:api" size="small" class="card-header-icon"></lightning-icon>
+                        API Usage (24h)
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="api-stats">
+                        <div class="api-stat-item">
+                            <div class="api-stat-value">{apiUsage.used}</div>
+                            <div class="api-stat-label">USED</div>
+                        </div>
+                        <div class="api-stat-item">
+                            <div class="api-stat-value">{apiUsage.remaining}</div>
+                            <div class="api-stat-label">REMAINING</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div>Limit: {apiUsage.limit}</div>
+                        <div class="progress-container">
+                            <div class="progress-bar" style={apiUsageStyle}></div>
+                        </div>
+                        <div class="usage-info">
+                            <div class="usage-status good">Good</div>
+                            <div class="usage-percentage">{apiUsagePercentage}%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:metrics" size="small" class="card-header-icon"></lightning-icon>
+                        Quick Stats
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="quick-stats">
+                        <div class="quick-stat-item">
+                            <div class="quick-stat-value">{apexClasses.classCount}</div>
+                            <div class="quick-stat-label">APEX CLASSES</div>
+                        </div>
+                        <div class="quick-stat-item">
+                            <div class="quick-stat-value">{permissions.permissionCount}</div>
+                            <div class="quick-stat-label">PERMISSIONS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Jobs Section - Full Width with Tabs -->
+        <div class="dashboard-content">
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:clock" size="small" class="card-header-icon"></lightning-icon>
+                        Scheduled Jobs
+                    </h3>
+                    <button class="refresh-button" onclick={refreshData}>
+                        <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <!-- Jobs Section Tabs -->
+                    <div class="jobs-section-tabs">
+                        <div class={runningJobsSectionClass} onclick={showRunningJobs}>
+                            Jobs Running
+                        </div>
+                        <div class={myJobsSectionClass} onclick={showMyJobs}>
+                            Jobs Created By Me
+                        </div>
+                    </div>
+
+                    <!-- Running Jobs Section -->
+                    <div if:true={isRunningJobsSectionActive}>
+                        <div class="tabs-container">
+                            <div class={upcomingTabClass} onclick={showUpcomingJobs}>
+                                Upcoming ({scheduledJobs.upcomingCount})
+                            </div>
+                            <div class={succeededTabClass} onclick={showSucceededJobs}>
+                                Succeeded ({scheduledJobs.succeededCount})
+                            </div>
+                            <div class={failedTabClass} onclick={showFailedJobs}>
+                                Failed ({scheduledJobs.failedCount})
+                            </div>
+                        </div>
+
+                        <!-- Upcoming Jobs Table -->
+                        <div if:true={isUpcomingTabActive}>
+                            <template if:true={scheduledJobs.upcomingJobs.length}>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th onclick={sortByJobName}>
+                                                Job Name
+                                                <lightning-icon if:true={isSortedByJobName} icon-name={jobNameSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByNextRun}>
+                                                Next Run
+                                                <lightning-icon if:true={isSortedByNextRun} icon-name={nextRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByLastRun}>
+                                                Last Run
+                                                <lightning-icon if:true={isSortedByLastRun} icon-name={lastRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByState}>
+                                                State
+                                                <lightning-icon if:true={isSortedByState} icon-name={stateSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByCreatedBy}>
+                                                Submitted By
+                                                <lightning-icon if:true={isSortedByCreatedBy} icon-name={createdBySortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={displayedJobs} for:item="job">
+                                            <tr key={job.Id}>
+                                                <td>{job.CronJobDetail.Name}</td>
+                                                <td>{job.formattedNextFireTime}</td>
+                                                <td>{job.formattedPreviousFireTime}</td>
+                                                <td>{job.State}</td>
+                                                <td>{job.CreatedBy.Name}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template if:false={scheduledJobs.upcomingJobs.length}>
+                                <div class="empty-state">No upcoming jobs found</div>
+                            </template>
+                        </div>
+
+                        <!-- Succeeded Jobs Table -->
+                        <div if:true={isSucceededTabActive}>
+                            <template if:true={scheduledJobs.succeededJobs.length}>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th onclick={sortByJobName}>
+                                                Job Name
+                                                <lightning-icon if:true={isSortedByJobName} icon-name={jobNameSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByNextRun}>
+                                                Next Run
+                                                <lightning-icon if:true={isSortedByNextRun} icon-name={nextRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByLastRun}>
+                                                Last Run
+                                                <lightning-icon if:true={isSortedByLastRun} icon-name={lastRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByState}>
+                                                State
+                                                <lightning-icon if:true={isSortedByState} icon-name={stateSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByCreatedBy}>
+                                                Submitted By
+                                                <lightning-icon if:true={isSortedByCreatedBy} icon-name={createdBySortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={displayedJobs} for:item="job">
+                                            <tr key={job.Id}>
+                                                <td>{job.CronJobDetail.Name}</td>
+                                                <td>{job.formattedNextFireTime}</td>
+                                                <td>{job.formattedPreviousFireTime}</td>
+                                                <td>{job.State}</td>
+                                                <td>{job.CreatedBy.Name}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template if:false={scheduledJobs.succeededJobs.length}>
+                                <div class="empty-state">No succeeded jobs found</div>
+                            </template>
+                        </div>
+
+                        <!-- Failed Jobs Table -->
+                        <div if:true={isFailedTabActive}>
+                            <template if:true={scheduledJobs.failedJobs.length}>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th onclick={sortByJobName}>
+                                                Job Name
+                                                <lightning-icon if:true={isSortedByJobName} icon-name={jobNameSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByNextRun}>
+                                                Next Run
+                                                <lightning-icon if:true={isSortedByNextRun} icon-name={nextRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByLastRun}>
+                                                Last Run
+                                                <lightning-icon if:true={isSortedByLastRun} icon-name={lastRunSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByState}>
+                                                State
+                                                <lightning-icon if:true={isSortedByState} icon-name={stateSortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                            <th onclick={sortByCreatedBy}>
+                                                Submitted By
+                                                <lightning-icon if:true={isSortedByCreatedBy} icon-name={createdBySortIcon} size="xx-small" class="sort-icon"></lightning-icon>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={displayedJobs} for:item="job">
+                                            <tr key={job.Id}>
+                                                <td>{job.CronJobDetail.Name}</td>
+                                                <td>{job.formattedNextFireTime}</td>
+                                                <td>{job.formattedPreviousFireTime}</td>
+                                                <td>{job.State}</td>
+                                                <td>{job.CreatedBy.Name}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template if:false={scheduledJobs.failedJobs.length}>
+                                <div class="empty-state">No failed jobs found</div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- My Jobs Section -->
+                    <div if:true={isMyJobsSectionActive}>
+                        <div class="my-jobs-container">
+                            <template if:true={scheduledJobs.myJobs.length}>
+                                <template for:each={scheduledJobs.myJobs} for:item="job">
+                                    <div key={job.Id} class="my-job-card">
+                                        <div class={job.statusClass}>
+                                            <div class="my-job-name">{job.CronJobDetail.Name}</div>
+                                            <div class="my-job-status">{job.statusLabel}</div>
+                                            
+                                            <template if:true={job.NextFireTime}>
+                                                <div class="my-job-time">
+                                                    <div class="time-label">Start Time:</div>
+                                                    <div class="time-value">{job.formattedNextFireTime}</div>
+                                                </div>
+                                            </template>
+                                            
+                                            <template if:true={job.progress}>
+                                                <div class="my-job-progress">
+                                                    <div class="progress-label">Progress: {job.progress}%</div>
+                                                    <div class="progress-container">
+                                                        <div class="progress-bar" style="width: {job.progress}%"></div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={scheduledJobs.myJobs.length}>
+                                <div class="empty-state">No jobs created by you</div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Footer - 2 Column Layout -->
+        <div class="dashboard-footer">
+            <!-- Apex Classes Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:apex" size="small" class="card-header-icon"></lightning-icon>
+                        Apex Classes ({apexClasses.classCount})
+                    </h3>
+                    <button class="refresh-button" onclick={refreshData}>
+                        <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="stats-container">
+                        <div class="stat-card purple">
+                            <div class="stat-value">{apexClasses.classCount}</div>
+                            <div class="stat-label">TOTAL CLASSES</div>
+                        </div>
+                        <div class="stat-card green">
+                            <div class="stat-value">{apexClasses.myClassesCount}</div>
+                            <div class="stat-label">CREATED BY ME</div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-value">{apexClasses.lowCoverageCount}</div>
+                            <div class="stat-label">LOW COVERAGE</div>
+                        </div>
+                    </div>
+
+                    <template if:false={apexClasses.canViewDetails}>
+                        <div class="permission-message">
+                            <lightning-icon icon-name="utility:info" size="small" class="permission-message-icon"></lightning-icon>
+                            <p>You do not have permission to view the list of all Apex classes. The count above represents all classes in the org.</p>
+                        </div>
+                    </template>
+
+                        <template if:true={apexClasses.canViewDetails}>
+                            <!-- My Classes Section -->
+                            <div class="section-title">Classes Created By Me</div>
+                            <template if:true={apexClasses.myClasses.length}>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>API Version</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={apexClasses.myClasses} for:item="cls">
+                                            <tr key={cls.Id}>
+                                                <td>{cls.Name}</td>
+                                                <td>{cls.ApiVersion}</td>
+                                                <td>{cls.Status}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template if:false={apexClasses.myClasses.length}>
+                                <div class="empty-state">No classes created by you</div>
+                            </template>
+                            
+                            <!-- Low Coverage Classes Section -->
+                            <div class="section-title">Classes With Low Coverage</div>
+                            <template if:true={apexClasses.lowCoverageClasses.length}>
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Coverage %</th>
+                                            <th>Created By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={apexClasses.lowCoverageClasses} for:item="cls">
+                                            <tr key={cls.id}>
+                                                <td>{cls.name}</td>
+                                                <td>
+                                                    <div class="coverage-bar-container">
+                                                        <div class="coverage-bar" style="width: {cls.coverage}%"></div>
+                                                        <span class="coverage-text">{cls.coverage}%</span>
+                                                    </div>
+                                                </td>
+                                                <td>{cls.createdByName}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            <template if:false={apexClasses.lowCoverageClasses.length}>
+                                <div class="empty-state">No classes with low coverage</div>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+
+            <!-- Permissions Card -->
+            <div class="card">
+                <div class="card-header">
+                    <h3>
+                        <lightning-icon icon-name="utility:key" size="small" class="card-header-icon"></lightning-icon>
+                        Permissions Information ({permissions.permissionCount})
+                    </h3>
+                    <button class="refresh-button" onclick={refreshData}>
+                        <lightning-icon icon-name="utility:refresh" size="small"></lightning-icon>
+                    </button>
+                </div>
+                <div class="card-content">
+                    <div class="stats-container">
+                        <div class="stat-card purple">
+                            <div class="stat-value">{permissions.permissionCount}</div>
+                            <div class="stat-label">TOTAL SETS</div>
+                        </div>
+                        <div class="stat-card blue">
+                            <div class="stat-value">{permissions.userPermissionCount}</div>
+                            <div class="stat-label">ON USER</div>
+                        </div>
+                        <div class="stat-card orange">
+                            <div class="stat-value">{permissions.myPermissionCount}</div>
+                            <div class="stat-label">CREATED BY ME</div>
+                        </div>
+                    </div>
+
+                    <div class="permission-view-info">
+                        <lightning-icon icon-name="utility:shield" size="small"></lightning-icon>
+                        <span>
+                            <template if:true={permissions.canViewAllPerms}>
+                                Administrator View
+                            </template>
+                            <template if:false={permissions.canViewAllPerms}>
+                                User View
+                            </template>
+                        </span>
+                    </div>
+
+                    <!-- Permission Sets Created By Me -->
+                    <div class="section-title">Permission Sets Created By Me</div>
+                    <template if:true={permissions.myPermissions.length}>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Label</th>
+                                    <th>API Name</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={permissions.myPermissions} for:item="perm">
+                                    <tr key={perm.Id}>
+                                        <td>{perm.Label}</td>
+                                        <td>{perm.Name}</td>
+                                        <td>
+                                            <template if:true={perm.IsCustom}>
+                                                <span class="badge admin">Custom</span>
+                                            </template>
+                                            <template if:false={perm.IsCustom}>
+                                                <span class="badge active">Standard</span>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+                    <template if:false={permissions.myPermissions.length}>
+                        <div class="empty-state">No permission sets created by you</div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <template if:true={isLoading}>
+            <div class="spinner-container">
+                <div class="spinner"></div>
+            </div>
+        </template>
+    </div>
+</template>

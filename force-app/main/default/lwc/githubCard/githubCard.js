@@ -1,6 +1,6 @@
 // githubCard.js
 import { LightningElement, track, api } from 'lwc';
-// Update these imports in githubCard.js
+// CORRECT - these methods exist in GitHubDataService
 import getGitHubDetailsFromSalesforce from '@salesforce/apex/GitHubDataService.getGitHubDetailsFromSalesforce';
 import refreshGitHubData from '@salesforce/apex/GitHubDataService.refreshGitHubData';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -29,6 +29,7 @@ export default class GithubCard extends LightningElement {
     @track showAllPRs = false;
     @track activeTab = 'overview';
     @track hasInitialLoad = false;
+    @track isReady = false;
 
     // GitHub repository configuration
     repoOwner = 'AI-luminati';
@@ -39,10 +40,16 @@ export default class GithubCard extends LightningElement {
     _wiredResult;
 
     connectedCallback() {
-        this.loadGitHubData();
+        // Delay loading to prevent flickering and sync with parent dashboard
+        setTimeout(() => {
+            this.isReady = true;
+            this.loadGitHubData();
+        }, 300); // Small delay to let parent dashboard settle
     }
 
     async loadGitHubData() {
+        if (!this.isReady) return; // Don't load until component is ready
+        
         this.isLoading = true;
         this.error = null;
         this.hasInitialLoad = true;
@@ -63,7 +70,10 @@ export default class GithubCard extends LightningElement {
             this.error = 'Failed to load GitHub data: ' + (error.body?.message || error.message);
             console.error('GitHub Data Error:', error);
         } finally {
-            this.isLoading = false;
+            // Add small delay before hiding loading to reduce flicker
+            setTimeout(() => {
+                this.isLoading = false;
+            }, 100);
         }
     }
 
@@ -197,7 +207,15 @@ export default class GithubCard extends LightningElement {
     }
 
     get showInitialState() {
-        return !this.hasInitialLoad && !this.isLoading;
+        return !this.hasInitialLoad && !this.isLoading && this.isReady;
+    }
+
+    get showLoadingState() {
+        return this.isLoading && this.isReady;
+    }
+
+    get showMainContent() {
+        return this.isReady && this.hasInitialLoad && !this.isLoading && !this.isRefreshing && !this.error;
     }
 
     get formattedLastSync() {

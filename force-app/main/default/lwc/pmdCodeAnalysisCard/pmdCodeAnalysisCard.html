@@ -35,20 +35,20 @@
                         variant="label-stacked">
                     </lightning-combobox>
                     
-                    <lightning-button
+                    <!-- <lightning-button
                         variant={scanButtonVariant}
                         label={scanButtonLabel}
                         onclick={handleScanClass}
                         disabled={scanButtonDisabled}
                         icon-name="utility:search"
                         class="scan-button">
-                    </lightning-button>
+                    </lightning-button> -->
                 </div>
 
                 <!-- Scanning Progress -->
                 <template if:true={isScanning}>
                     <div class="scanning-container">
-                        <lightning-spinner alternative-text="Scanning class..." size="medium"></lightning-spinner>
+                        <!-- <lightning-spinner alternative-text="Scanning class..." size="medium"></lightning-spinner> -->
                         <p class="scanning-text">Analyzing {selectedClassName} with PMD...</p>
                         <div class="scanning-steps">
                             <div class="step-item active">

@@ -1,5 +1,5 @@
 public with sharing class GitHubService {
-    private static final String GITHUB_API = 'callout:GitHub';
+    private static final String GITHUB_API = 'callout:Github';
  
     @AuraEnabled(cacheable=true)
     public static List<Map<String, Object>> getMyPullRequests(String repoOwner, String repoName, String githubUsername) {

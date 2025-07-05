@@ -1,0 +1,211 @@
+/* 
+ * Salesforce LWC Dashboard - CSS Variables
+ * A unified set of CSS variables for consistent theming across all components
+ */
+
+:host {
+    /* Base Colors - Light Mode */
+    --color-bg-primary-light: #f8fafc;
+    --color-bg-secondary-light: #f1f5f9;
+    --color-bg-tertiary-light: #e2e8f0;
+    
+    --color-text-primary-light: #1e293b;
+    --color-text-secondary-light: #475569;
+    --color-text-tertiary-light: #64748b;
+    
+    /* Base Colors - Dark Mode */
+    --color-bg-primary-dark: #121212;
+    --color-bg-secondary-dark: #1E1E2E;
+    --color-bg-tertiary-dark: #2D2D3E;
+    
+    --color-text-primary-dark: #FFFFFF;
+    --color-text-secondary-dark: #B0BEC5;
+    --color-text-tertiary-dark: #78909C;
+    
+    /* Accent Colors */
+    --color-primary: #7B68EE;
+    --color-primary-light: #9D8DF2;
+    --color-primary-dark: #5A48C0;
+    
+    --color-secondary: #3CAEA3;
+    --color-secondary-light: #5ECEC3;
+    --color-secondary-dark: #2C8E83;
+    
+    /* Status Colors */
+    --color-success: #38B2AC;
+    --color-success-light: #4FD1CB;
+    --color-success-dark: #2C9A94;
+    
+    --color-warning: #F6AD55;
+    --color-warning-light: #FBC174;
+    --color-warning-dark: #E69D45;
+    
+    --color-error: #F56565;
+    --color-error-light: #FC8181;
+    --color-error-dark: #E53E3E;
+    
+    --color-info: #63B3ED;
+    --color-info-light: #7CC4FA;
+    --color-info-dark: #4299E1;
+    
+    /* Card Specific Colors */
+    --color-user-card: #4facfe;
+    --color-api-card: #38B2AC;
+    --color-jobs-card: #F56565;
+    --color-apex-card: #667eea;
+    --color-permissions-card: #a78bfa;
+    
+    /* Gradients */
+    --gradient-bg-light: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-bg-dark: linear-gradient(135deg, #121212 0%, #1E1E2E 50%, #2D2D3E 100%);
+    
+    --gradient-primary: linear-gradient(135deg, #7B68EE, #5A48C0);
+    --gradient-secondary: linear-gradient(135deg, #3CAEA3, #2C8E83);
+    --gradient-success: linear-gradient(135deg, #38B2AC, #2C9A94);
+    --gradient-warning: linear-gradient(135deg, #F6AD55, #E69D45);
+    --gradient-error: linear-gradient(135deg, #F56565, #E53E3E);
+    --gradient-info: linear-gradient(135deg, #63B3ED, #4299E1);
+    
+    /* User Card Gradient */
+    --gradient-user-card: linear-gradient(135deg, #4facfe, #00f2fe);
+    
+    /* API Card Gradient */
+    --gradient-api-card: linear-gradient(135deg, #43e97b, #38f9d7);
+    
+    /* Jobs Card Gradient */
+    --gradient-jobs-card: linear-gradient(135deg, #ff9a9e, #fecfef);
+    
+    /* Apex Card Gradient */
+    --gradient-apex-card: linear-gradient(135deg, #a8edea, #fed6e3);
+    
+    /* Permissions Card Gradient */
+    --gradient-permissions-card: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+    
+    --shadow-sm-dark: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md-dark: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg-dark: 0 10px 15px rgba(0, 0, 0, 0.5);
+    --shadow-xl-dark: 0 20px 25px rgba(0, 0, 0, 0.6);
+    
+    /* Card Glow Effects */
+    --glow-primary: 0 0 15px rgba(123, 104, 238, 0.3);
+    --glow-secondary: 0 0 15px rgba(60, 174, 163, 0.3);
+    --glow-success: 0 0 15px rgba(56, 178, 172, 0.3);
+    --glow-warning: 0 0 15px rgba(246, 173, 85, 0.3);
+    --glow-error: 0 0 15px rgba(245, 101, 101, 0.3);
+    --glow-info: 0 0 15px rgba(99, 179, 237, 0.3);
+    
+    /* Border Radius */
+    --border-radius-sm: 0.25rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
+    --border-radius-2xl: 1.5rem;
+    --border-radius-full: 9999px;
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+    
+    /* Typography */
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 1.875rem;
+    --font-size-4xl: 2.25rem;
+    
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* Z-index */
+    --z-index-dropdown: 1000;
+    --z-index-sticky: 1020;
+    --z-index-fixed: 1030;
+    --z-index-modal-backdrop: 1040;
+    --z-index-modal: 1050;
+    --z-index-popover: 1060;
+    --z-index-tooltip: 1070;
+    
+    /* Opacity */
+    --opacity-low: 0.3;
+    --opacity-medium: 0.5;
+    --opacity-high: 0.8;
+    
+    /* Glassmorphism */
+    --glass-blur: blur(10px);
+    --glass-opacity-light: 0.7;
+    --glass-opacity-dark: 0.2;
+    --glass-border-light: 1px solid rgba(255, 255, 255, 0.2);
+    --glass-border-dark: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Mode Class Modifiers */
+.dark-mode {
+    /* Background Colors */
+    --color-bg-primary: var(--color-bg-primary-dark);
+    --color-bg-secondary: var(--color-bg-secondary-dark);
+    --color-bg-tertiary: var(--color-bg-tertiary-dark);
+    
+    /* Text Colors */
+    --color-text-primary: var(--color-text-primary-dark);
+    --color-text-secondary: var(--color-text-secondary-dark);
+    --color-text-tertiary: var(--color-text-tertiary-dark);
+    
+    /* Background Gradient */
+    --gradient-bg: var(--gradient-bg-dark);
+    
+    /* Shadows */
+    --shadow-sm: var(--shadow-sm-dark);
+    --shadow-md: var(--shadow-md-dark);
+    --shadow-lg: var(--shadow-lg-dark);
+    --shadow-xl: var(--shadow-xl-dark);
+    
+    /* Glass Effect */
+    --glass-opacity: var(--glass-opacity-dark);
+    --glass-border: var(--glass-border-dark);
+}
+
+/* Light Mode Class Modifiers */
+.light-mode {
+    /* Background Colors */
+    --color-bg-primary: var(--color-bg-primary-light);
+    --color-bg-secondary: var(--color-bg-secondary-light);
+    --color-bg-tertiary: var(--color-bg-tertiary-light);
+    
+    /* Text Colors */
+    --color-text-primary: var(--color-text-primary-light);
+    --color-text-secondary: var(--color-text-secondary-light);
+    --color-text-tertiary: var(--color-text-tertiary-light);
+    
+    /* Background Gradient */
+    --gradient-bg: var(--gradient-bg-light);
+    
+    /* Shadows */
+    --shadow-sm: var(--shadow-sm);
+    --shadow-md: var(--shadow-md);
+    --shadow-lg: var(--shadow-lg);
+    --shadow-xl: var(--shadow-xl);
+    
+    /* Glass Effect */
+    --glass-opacity: var(--glass-opacity-light);
+    --glass-border: var(--glass-border-light);
+}

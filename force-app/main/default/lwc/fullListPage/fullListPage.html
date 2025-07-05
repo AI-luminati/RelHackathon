@@ -1,0 +1,60 @@
+<template>
+    <div class={containerClass}>
+        <div class="page-header slds-p-around_medium slds-border_bottom">
+            <lightning-button-icon 
+                icon-name="utility:chevronleft" 
+                variant="bare" 
+                alternative-text="Back to Dashboard" 
+                title="Back to Dashboard" 
+                onclick={handleGoBack}
+                class="slds-m-right_small back-button">
+            </lightning-button-icon>
+            <h1 class="slds-text-heading_large page-title">{pageTitle}</h1>
+        </div>
+
+        <div class="slds-p-around_medium content-area">
+            <template if:true={isLoading}>
+                <div class="slds-is-relative spinner-container-local">
+                    <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+            <template if:false={isLoading}>
+                <template if:true={errorText}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error" role="alert">
+                        <lightning-icon icon-name="utility:error" alternative-text="Error!" variant="inverse" size="small"></lightning-icon>
+                        <div class="slds-notify__content slds-m-left_small">
+                            <h2 class="slds-text-heading_small">An error occurred:</h2>
+                            <p>{errorText}</p>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:false={errorText}>
+                    <template if:true={hasRecords}>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={records}
+                            columns={columns}
+                            hide-checkbox-column
+                            show-row-number-column
+                            class="slds-table_bordered slds-table_striped full-list-table">
+                        </lightning-datatable>
+
+                        <div class="slds-grid slds-grid_align-spread slds-p-vertical_medium pagination-controls">
+                            <lightning-button label="Previous" onclick={handlePrevious} disabled={isPreviousDisabled}></lightning-button>
+                            <span class="slds-text-body_small page-info">Page {pageNumber} of {totalPages} (Total: {totalRecords})</span>
+                            <lightning-button label="Next" onclick={handleNext} disabled={isNextDisabled}></lightning-button>
+                        </div>
+                    </template>
+                    <template if:false={hasRecords}>
+                        <div class="slds-text-align_center slds-p-around_large empty-state-full-list">
+                            <lightning-icon icon-name="utility:info" size="large" class="slds-m-bottom_medium empty-state-icon"></lightning-icon>
+                            <p class="slds-text-heading_medium">No records found.</p>
+                            <p class="empty-state-message">There are no items to display for the selected criteria.</p>
+                        </div>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>

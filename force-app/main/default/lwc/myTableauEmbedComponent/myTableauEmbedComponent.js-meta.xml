@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <!-- Keep lightning__FlowScreen as the target for Flow output rendering -->
+        <target>lightning__FlowScreen</target>
+        <!-- Add other targets if needed -->
+        <!-- <target>lightning__AppPage</target> -->
+    </targets>
+    <targetConfigs>
+         <!-- Configuration for Flow Screen target -->
+        <targetConfig targets="lightning__FlowScreen">
+             <!-- Define the property that receives the output -->
+             <!-- Using the List of Apex Type based on the debug output -->
+             <property
+                name="actionOutputItem"
+                type="apex://CopilotActionOutput[]"  
+                label="Action Output Item"
+                description="The output item from the action containing the Tableau data (URL, prefix, suffix)."
+             />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,102 @@
+/* fullListPage.css */
+.full-list-page-container {
+    --flp-bg: var(--lwc-colorBackgroundAlt, #f3f2f2); /* SLDS variable */
+    --flp-text-primary: var(--lwc-colorTextDefault, #080707);
+    --flp-text-secondary: var(--lwc-colorTextWeak, #3e3e3c);
+    --flp-border: var(--lwc-colorBorder, #dddbda);
+    --flp-header-bg: var(--lwc-colorBackground, #ffffff); /* Standard page header background */
+    --flp-button-text: var(--lwc-colorTextBrand, #0070d2);
+    --flp-button-text-hover: var(--lwc-colorTextBrandHover, #005fb2);
+
+    background-color: var(--flp-bg);
+    min-height: 100vh;
+}
+
+.full-list-page-container.dark-theme-on-full-page {
+    /* Re-using dashboardHome dark theme variables as fallbacks if they are global */
+    --flp-bg: var(--dark-bg-gradient-end, #1a1a2e);
+    --flp-text-primary: var(--dark-text-primary, #e0e0e0);
+    --flp-text-secondary: var(--dark-text-secondary, #a0a0a0);
+    --flp-border: var(--dark-border, #444455);
+    --flp-header-bg: var(--dark-card-bg, #2d2d3a); /* Header bar to match card bg in dark mode */
+    --flp-button-text: var(--accent-blue, #3498db); /* Using accent from dashboard theme */
+    --flp-button-text-hover: #5dade2; /* Lighter blue for hover */
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    background-color: var(--flp-header-bg);
+    border-bottom: 1px solid var(--flp-border);
+    position: sticky;
+    top: 0;
+    z-index: 100; /* Keep header above content */
+}
+.page-header .back-button lightning-icon {
+    --sds-c-icon-color-foreground-default: var(--flp-button-text);
+}
+.page-header .back-button:hover lightning-icon {
+    --sds-c-icon-color-foreground-default: var(--flp-button-text-hover);
+}
+
+.page-title {
+    color: var(--flp-text-primary);
+    margin-left: var(--lwc-spacingSmall, 0.75rem);
+}
+
+.content-area {
+    padding-top: 1rem; /* Space below sticky header */
+}
+
+.pagination-controls {
+    background-color: var(--flp-header-bg); /* Match header/footer bar style */
+    padding: 0.75rem 1rem;
+    border-top: 1px solid var(--flp-border);
+    border-radius: 0 0 var(--lwc-borderRadiusMedium, 0.25rem) var(--lwc-borderRadiusMedium, 0.25rem);
+}
+.page-info {
+    color: var(--flp-text-secondary);
+    line-height: var(--lwc-lineHeightButton, 2rem); /* Align with buttons */
+}
+
+.full-list-table {
+    background-color: var(--flp-header-bg); /* Table content area same as header */
+    border: 1px solid var(--flp-border);
+    border-bottom: none; /* Border handled by pagination controls */
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem) var(--lwc-borderRadiusMedium, 0.25rem) 0 0;
+}
+/* Datatable text color for dark mode needs to be explicitly set if not inheriting */
+.dark-theme-on-full-page .full-list-table,
+.dark-theme-on-full-page .slds-table, /* More general SLDS table targeting */
+.dark-theme-on-full-page .slds-th__action,
+.dark-theme-on-full-page .slds-truncate {
+    color: var(--flp-text-primary) !important; /* Override default SLDS table colors in dark mode */
+}
+.dark-theme-on-full-page .slds-table th, 
+.dark-theme-on-full-page .slds-table td {
+    border-color: var(--flp-border) !important;
+}
+
+
+.spinner-container-local {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state-full-list {
+    background-color: var(--flp-header-bg);
+    padding: var(--lwc-spacingLarge, 1.5rem);
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+    border: 1px solid var(--flp-border);
+}
+.empty-state-full-list .empty-state-icon lightning-icon {
+    --sds-c-icon-color-foreground-default: var(--flp-text-secondary);
+}
+.empty-state-full-list .slds-text-heading_medium {
+    color: var(--flp-text-primary);
+}
+.empty-state-full-list .empty-state-message {
+    color: var(--flp-text-secondary);
+}

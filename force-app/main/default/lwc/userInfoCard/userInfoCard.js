@@ -17,6 +17,7 @@ export default class UserInfoCard extends LightningElement {
         // Ensure Id is initialized even if value is null/undefined
         this._userInfo = value ? { ...this._userInfo, ...value } : { Name: '', Email: '', SmallPhotoUrl: '', Id: ''};
     }
+
     get userProfileLink() {
         if (this.userInfo && this.userInfo.Id) {
             // Construct the specific "Manage User" setup URL
@@ -28,5 +29,10 @@ export default class UserInfoCard extends LightningElement {
             return `/lightning/setup/ManageUsers/page?address=${encodedAddressParam}`;
         }
         return '#'; // Fallback if no user Id
+    }
+
+    get trailheadProfileLink() {
+        // Direct link to your Trailhead profile
+        return 'https://www.salesforce.com/trailblazer/profile';
     }
 }

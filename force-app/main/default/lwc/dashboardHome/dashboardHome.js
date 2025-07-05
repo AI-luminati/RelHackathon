@@ -6,13 +6,13 @@ import getApexClassesInfo from '@salesforce/apex/DashboardController.getApexClas
 import getApiUsage from '@salesforce/apex/DashboardController.getApiUsage';
 import getPermissionsInfo from '@salesforce/apex/DashboardController.getPermissionsInfo';
 import { refreshApex } from '@salesforce/apex';
- 
+
 export default class DashboardHome extends LightningElement {
     @track isDarkMode = false;
     // Updated userInfo to include Id for reliable passing to child components
     @track userInfo = { Id: null, Name: '', Email: '', SmallPhotoUrl: '' };
     _wiredUserInfoResult;
- 
+
     @track scheduledJobs = {
         upcomingJobs: [], succeededJobs: [], failedJobs: [], myJobs: [],
         upcomingCount: 0, succeededCount: 0, failedCount: 0, myJobsCount: 0,
@@ -21,64 +21,64 @@ export default class DashboardHome extends LightningElement {
         myUpcomingCount: 0, mySucceededCount: 0, myFailedCount: 0
     };
     _wiredScheduledJobsResult;
- 
+
     @track apexClasses = {
         classes: [], myClasses: [], lowCoverageClasses: [],
         classCount: 0, myClassesCount: 0, lowCoverageCount: 0, canViewDetails: false
     };
     _wiredApexClassesResult;
-   
+    
     @track apiUsage = { limit: 0, used: 0, remaining: 0 };
     _wiredApiUsageResult;
- 
+
     @track permissions = {
         permissions: [], myPermissions: [],
         permissionCount: 0, userPermissionCount: 0, myPermissionCount: 0,
         canViewAllPerms: false, viewType: ''
     };
     _wiredPermissionsResult;
-   
+    
     @track isLoading = true;
     @track error = null;
     @track showScrollToTop = false;
     initialLoadCounter = 0;
     totalWireServices = 5; // Keep this as 5 since Jira card handles its own loading
- 
+
     connectedCallback() {
         setTimeout(() => {
             if (this.isLoading && this.initialLoadCounter < this.totalWireServices) {
-                 this.isLoading = false;
+                 this.isLoading = false; 
             }
         }, 8000); // Fallback to stop loading after 8 seconds
- 
+
         // Add scroll event listener
         window.addEventListener('scroll', this.handleScroll.bind(this));
     }
- 
+
     disconnectedCallback() {
         // Remove scroll event listener
         window.removeEventListener('scroll', this.handleScroll.bind(this));
     }
-   
+    
     handleWireCompletion() {
         this.initialLoadCounter++;
         if (this.initialLoadCounter >= this.totalWireServices) {
             this.isLoading = false;
         }
     }
- 
+
     handleScroll() {
         // Show button when user scrolls down 300px
         this.showScrollToTop = window.pageYOffset > 300;
     }
- 
+
     handleScrollToTop() {
         window.scrollTo({
             top: 0,
             behavior: 'smooth'
         });
     }
- 
+
     @wire(getCurrentUserInfo)
     wiredUserInfo(result) {
         this._wiredUserInfoResult = result;
@@ -92,7 +92,7 @@ export default class DashboardHome extends LightningElement {
         }
         this.handleWireCompletion();
     }
- 
+
     @wire(getScheduledJobs)
     wiredScheduledJobs(result) {
         this._wiredScheduledJobsResult = result;
@@ -116,8 +116,8 @@ export default class DashboardHome extends LightningElement {
             };
         } else if (result.error) {
             this.handleError(result.error, 'Scheduled Jobs');
-            this.scheduledJobs = {
-                upcomingJobs: [], succeededJobs: [], failedJobs: [], myJobs: [],
+            this.scheduledJobs = { 
+                upcomingJobs: [], succeededJobs: [], failedJobs: [], myJobs: [], 
                 upcomingCount: 0, succeededCount: 0, failedCount: 0, myJobsCount: 0,
                 myUpcomingJobs: [], mySucceededJobs: [], myFailedJobs: [],
                 myUpcomingCount: 0, mySucceededCount: 0, myFailedCount: 0
@@ -125,7 +125,7 @@ export default class DashboardHome extends LightningElement {
         }
         this.handleWireCompletion();
     }
- 
+
     @wire(getApexClassesInfo)
     wiredApexClasses(result) {
         this._wiredApexClassesResult = result;
@@ -137,7 +137,7 @@ export default class DashboardHome extends LightningElement {
         }
         this.handleWireCompletion();
     }
- 
+
     @wire(getApiUsage)
     wiredApiUsage(result) {
         this._wiredApiUsageResult = result;
@@ -149,7 +149,7 @@ export default class DashboardHome extends LightningElement {
         }
         this.handleWireCompletion();
     }
- 
+
     @wire(getPermissionsInfo)
     wiredPermissions(result) {
         this._wiredPermissionsResult = result;
@@ -161,25 +161,25 @@ export default class DashboardHome extends LightningElement {
         }
         this.handleWireCompletion();
     }
- 
+
     handleError(error, context) {
         this.error = `Error loading ${context}.`;
         console.error(`Error loading ${context}:`, JSON.stringify(error));
     }
- 
+
     handleRefreshRequest() {
         if (this.isLoading) return;
- 
+
         this.isLoading = true;
-        this.initialLoadCounter = 0;
+        this.initialLoadCounter = 0; 
         const refreshes = [];
- 
+
         if (this._wiredUserInfoResult) refreshes.push(refreshApex(this._wiredUserInfoResult));
         if (this._wiredScheduledJobsResult) refreshes.push(refreshApex(this._wiredScheduledJobsResult));
         if (this._wiredApexClassesResult) refreshes.push(refreshApex(this._wiredApexClassesResult));
         if (this._wiredApiUsageResult) refreshes.push(refreshApex(this._wiredApiUsageResult));
         if (this._wiredPermissionsResult) refreshes.push(refreshApex(this._wiredPermissionsResult));
- 
+
         // *** IMPROVED: Only refresh Jira if it's not currently processing a status change ***
         setTimeout(() => {
             try {
@@ -196,7 +196,7 @@ export default class DashboardHome extends LightningElement {
                 console.log('Jira card refresh skipped:', error.message);
             }
         }, 100);
- 
+
         Promise.all(refreshes)
             .catch(error => {
                 this.handleError(error, 'data refresh');
@@ -209,17 +209,17 @@ export default class DashboardHome extends LightningElement {
                 }, 300);
             });
     }
- 
+
     handleThemeToggle(event) {
         this.isDarkMode = event.target.checked;
     }
- 
+
     get containerClass() {
         let classes = 'dashboard-container';
         classes += this.isDarkMode ? ' dark-theme' : ' light-theme'; // light-theme class is not strictly needed if defaults are light
         return classes;
     }
- 
+
     get scrollToTopClass() {
         let classes = 'scroll-to-top';
         if (this.showScrollToTop) {
@@ -227,7 +227,7 @@ export default class DashboardHome extends LightningElement {
         }
         return classes;
     }
- 
+
     // Getter methods for QuickStatsCard
     // Getter methods for QuickStatsCard
 get myApexClassCount() {
@@ -236,7 +236,7 @@ get myApexClassCount() {
     console.log('this.apexClasses:', this.apexClasses);
     return count;
 }
- 
+
 get myPermissionCount() {
     const count = this.permissions ? this.permissions.myPermissionCount : 0;
     console.log('myPermissionCount getter called, returning:', count);
