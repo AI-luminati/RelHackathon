@@ -77,6 +77,16 @@
             </c-permissions-info-card>
         </div>
 
+        <!-- Documentation Card - Full Width -->
+        <div class="dashboard-content">
+            <c-documentation-card
+                current-user-id={userInfo.Id}
+                is-dark-mode-active={isDarkMode}
+                dashboard-page-api-name="Home"
+                onrefreshrequest={handleRefreshRequest}>
+            </c-documentation-card>
+        </div>
+
         <!-- Scroll to Top Button -->
         <div class={scrollToTopClass} onclick={handleScrollToTop}>
             <lightning-icon icon-name="utility:up" size="small" alternative-text="Scroll to top"></lightning-icon>
